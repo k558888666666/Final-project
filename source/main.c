@@ -1,485 +1,651 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-typedef struct card
-{
-	char* face;
-	char* suit;
-}card;
+/* Fig 10.3: fig10_03.c
+   The card shuffling and dealing program using structures */
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
 
-void start(const card* const wDeck, int *z, int *moneypl, int *moneysum, int *moneyco);
-void shuffle(card* const wDeck);
-void bet(int *moneypl, int mode);
-int select();
-void money(int *(*moneypl), int *(*moneysum), int *(*moneyco));
-void turn(card* const wDeck, int turn);
-void show(int i, int f, card* const wDeck);
-void fillDeck(card  *wDeck, const char* wFace[], const char* wSuit[]);
-int compare(card  *wDeck);
-int main()
-{
-	int z = 0;
-	int moneypl = 2000;
-	int moneyco = 2000;
-	int moneysum = 0;
+   /* card structure definition */
+struct card {
+	const char *face; /* define pointer face */
+	const char *suit; /* define pointer face */
+};/* end structure card*/
 
-	card  deck[52];
-	char choose;
-	const char *face[] = { "1","2","3","4","5","6","7","8","9","10","J","Q","K" };
+typedef struct card Card;/* new type name for struct card*/
+void compare(Card  *wDeck);
+/* prototypes */
+void fillDeck(Card * const wDeck, const char * wFace[],
+	const char * wSuit[]);
+void shuffle(Card * const wDeck);
+void deal(const Card * const wDeck);
+
+int main(void)
+{
+	Card deck[52];/*define array of Cards*/
+	int heart = 0;
+	/* initialize array of pointers */
+	const char *face[] = { "1","2","3","4","5","6","7","8","9","T","J","Q","K" };
 	const char *suit[] = { "紅心","方塊","梅花","黑桃" };
-	srand(time(NULL));
-	fillDeck(deck, face, suit);
-	int Cmoney, Pmoney;
 
-	start(deck, &z, &moneypl, &moneysum, &moneyco);
+	srand(time(NULL));/* randomize */
 
+	fillDeck(deck, face, suit);/* load the deck with Cards */
+	shuffle(deck);
+	compare(deck);
+	/* put Card in random order */
+	deal(deck);/* deal all 52 Cards*/
 	system("pause");
-	return 0;
-}
+	return 0;/* indicates successful termination */
+}/* end main */
 
-void start(const card* const wDeck, int *z, int *moneypl, int *moneysum, int *moneyco)
+void compare(Card  *wDeck)
 {
-	int raise;
-	int mode;
-	char choose;
-
-
-
-開始:
-
-	printf("是否要開始新賽局(y/n)\n");
-
-	scanf_s("%c", &choose);
-	if (choose == 'y')
-	{
-		shuffle(wDeck, &z);
-		//==========================================第一次下注
-		turn(wDeck, 1);
-		mode = select();
-		if (mode == 1)
-		{
-			(*moneypl) -= 100;
-			(*moneyco) -= 100;
-			(*moneysum) += 200;
-		}
-		else if (mode == 2)
-		{
-		加注1:
-			printf("\n請輸入要加注到多少");
-			scanf_s("%d", &raise);
-			if (raise > (*moneypl))
-			{
-				printf("\n你根本沒這麼多錢好嗎\n");
-				goto 加注1;
-			}
-			printf("\n");
-			(*moneypl) -= raise;
-			(*moneyco) -= raise;
-			(*moneysum) += 2 * raise;
-		}
-		else if (mode == 3)
-		{
-			if ((*moneypl) > (*moneyco))
-			{
-				(*moneysum) += (*moneyco);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = (*moneypl) - (*moneyco);
-			}
-			if ((*moneypl) = (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = 0;
-			}
-			if ((*moneypl) < (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneypl);
-				(*moneyco) = (*moneyco) - (*moneypl);
-				(*moneypl) = 0;
-			}
-		}
-		else if (mode == 4)
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-			getchar();
-			goto 結束;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		printf("\n\n===================第1輪下注結束===================\n\n");
-		//==========================================第二次下注
-		turn(wDeck, 2);
-		mode = select();
-		if (mode == 1)
-		{
-			(*moneypl) -= 100;
-			(*moneyco) -= 100;
-			(*moneysum) += 200;
-		}
-		else if (mode == 2)
-		{
-			{
-			加注2:
-				printf("\n請輸入要加注到多少");
-				scanf_s("%d", &raise);
-				if (raise > (*moneypl))
-				{
-					printf("\n你根本沒這麼多錢好嗎\n");
-					goto 加注2;
-				}
-				printf("\n");
-				(*moneypl) -= raise;
-				(*moneyco) -= raise;
-				(*moneysum) += 2 * raise;
-			}
-		}
-		else if (mode == 3)
-		{
-			if ((*moneypl) > (*moneyco))
-			{
-				(*moneysum) += (*moneyco);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = (*moneypl) - (*moneyco);
-			}
-			if ((*moneypl) = (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = 0;
-			}
-			if ((*moneypl) < (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneypl);
-				(*moneyco) = (*moneyco) - (*moneypl);
-				(*moneypl) = 0;
-			}
-		}
-		else if (mode == 4)
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-			getchar();
-			goto 結束;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		printf("\n\n===================第2輪下注結束===================\n\n");
-		//==========================================第三次下注
-		turn(wDeck, 3);
-		mode = select();
-		if (mode == 1)
-		{
-			(*moneypl) -= 100;
-			(*moneyco) -= 100;
-			(*moneysum) += 200;
-		}
-		else if (mode == 2)
-		{
-			{
-			加注3:
-				printf("\n請輸入要加注到多少");
-				scanf_s("%d", &raise);
-				if (raise > (*moneypl))
-				{
-					printf("\n你根本沒這麼多錢好嗎\n");
-					goto 加注3;
-				}
-				printf("\n");
-				(*moneypl) -= raise;
-				(*moneyco) -= raise;
-				(*moneysum) += 2 * raise;
-			}
-		}
-		else if (mode == 3)
-		{
-			if ((*moneypl) > (*moneyco))
-			{
-				(*moneysum) += (*moneyco);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = (*moneypl) - (*moneyco);
-			}
-			if ((*moneypl) = (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = 0;
-			}
-			if ((*moneypl) < (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneypl);
-				(*moneyco) = (*moneyco) - (*moneypl);
-				(*moneypl) = 0;
-			}
-		}
-		else if (mode == 4)
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-			getchar();
-			goto 結束;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		printf("\n\n===================第3輪下注結束===================\n\n");
-		//==========================================第四次下注
-		turn(wDeck, 4);
-		mode = select();
-		if (mode == 1)
-		{
-			(*moneypl) -= 100;
-			(*moneyco) -= 100;
-			(*moneysum) += 200;
-		}
-		else if (mode == 2)
-		{
-			{
-			加注4:
-				printf("\n請輸入要加注到多少");
-				scanf_s("%d", &raise);
-				if (raise > (*moneypl))
-				{
-					printf("\n你根本沒這麼多錢好嗎\n");
-					goto 加注4;
-				}
-				printf("\n");
-				(*moneypl) -= raise;
-				(*moneyco) -= raise;
-				(*moneysum) += 2 * raise;
-			}
-		}
-		else if (mode == 3)
-		{
-			if ((*moneypl) > (*moneyco))
-			{
-				(*moneysum) += (*moneyco);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = (*moneypl) - (*moneyco);
-			}
-			if ((*moneypl) = (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = 0;
-			}
-			if ((*moneypl) < (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneypl);
-				(*moneyco) = (*moneyco) - (*moneypl);
-				(*moneypl) = 0;
-			}
-		}
-		else if (mode == 4)
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-			getchar();
-			goto 結束;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		printf("\n\n===================第4輪下注結束===================\n\n");
-		//==========================================第五次下注
-		mode = select();
-		if (mode == 1)
-		{
-			(*moneypl) -= 100;
-			(*moneyco) -= 100;
-			(*moneysum) += 200;
-		}
-		else if (mode == 2)
-		{
-			{
-			加注5:
-				printf("\n請輸入要加注到多少");
-				scanf_s("%d", &raise);
-				if (raise > (*moneypl))
-				{
-					printf("\n你根本沒這麼多錢好嗎\n");
-					goto 加注5;
-				}
-				printf("\n");
-				(*moneypl) -= raise;
-				(*moneyco) -= raise;
-				(*moneysum) += 2 * raise;
-			}
-		}
-		else if (mode == 3)
-		{
-			if ((*moneypl) > (*moneyco))
-			{
-				(*moneysum) += (*moneyco);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = (*moneypl) - (*moneyco);
-			}
-			if ((*moneypl) = (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneyco);
-				(*moneyco) = 0;
-				(*moneypl) = 0;
-			}
-			if ((*moneypl) < (*moneyco))
-			{
-				(*moneysum) += (*moneypl);
-				(*moneysum) += (*moneypl);
-				(*moneyco) = (*moneyco) - (*moneypl);
-				(*moneypl) = 0;
-			}
-		}
-		else if (mode == 4)
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-			getchar();
-			goto 結束;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		printf("\n\n===================第5輪下注結束===================\n\n");
-		getchar();
-		goto 結束;
-
-	結束:
-		printf("\n\n=====================此局結算===================\n\n");
-
-		if (compare(wDeck) == 1)
-		{
-			(*moneypl) += (*moneysum);
-			(*moneysum) = 0;
-		}
-		else
-		{
-			(*moneyco) += (*moneysum);
-			(*moneysum) = 0;
-		}
-		money(&(*moneypl), &(*moneysum), &(*moneyco));
-		if ((*moneyco) <= 0 || (*moneypl) <= 0)
-		{
-			goto 總結;
-		}
-		goto 開始;
-	}
-
-	else
-	{
-	總結:
-		printf("=====================總結算=====================\n");
-		if ((*moneyco) <= 0)
-		{
-			printf("電腦破產\n");
-		}
-		else
-		{
-			printf("玩家破產\n");
-		}
-	}
-}
-
-int select()
-{
-	int mode;
-	printf("\n\n請輸入執行的動作\n"
-		"1為下注100元\n"
-		"2為加注\n"
-		"3為ALL IN\n"
-		"4為棄排\n");
-	scanf_s("%d", &mode);
-	return mode;
-}
-
-void bet(int *moneypl, int mode)
-{
-
-}
-
-void money(int *(*moneypl), int *(*moneysum), int *(*moneyco))
-{
-	printf("\n您現在還剩%d元", &(*(*moneypl)));
-	printf("\n電腦還剩%d元", &(*(*moneyco)));
-	printf("\n檯面上共有%d元\n\n", &(*(*moneysum)));
-}
-
-void turn(card* const wDeck, int turn)
-{
-	if (turn == 1)
-	{
-		printf("\n您手上的排:");
-		show(0, 1, wDeck);
-		printf("\n\n\n");
-	}
-	else if (turn == 2)
-	{
-		printf("\n場上的排:");
-		show(2, 4, wDeck);
-		printf("\n\n您手上的排:");
-		show(0, 1, wDeck);
-		printf("\n\n\n");
-
-	}
-	else if (turn == 3)
-	{
-		printf("\n場上的排:");
-		show(2, 5, wDeck);
-		printf("\n\n您手上的排:");
-		show(0, 1, wDeck);
-		printf("\n\n\n");
-
-	}
-	else if (turn == 4)
-	{
-		printf("\n場上的排:");
-		show(2, 6, wDeck);
-		printf("\n\n您手上的排:");
-		show(0, 1, wDeck);
-		printf("\n\n\n");
-
-	}
-}
-
-void show(int i, int f, card* const wDeck)
-{
-	for (int j = i; j <= f; j++)
-	{
-		printf("%s%-5s", wDeck[j].suit, wDeck[j].face);
-	}
-}
-
-int compare(card  *wDeck)
-{
-	//如果玩家勝利
-	return 1;
-	//如果電腦勝利
-	return 0;
-}
-
-void shuffle(card* const wDeck, int z)
-{
+	int formpl = 0, numpl[20] = { 0 }, colorpl[5] = { 0 }, pornpl = 0, sumpl = 0, onepairpl, twopairpl;
+	int formco = 0, numco[20] = { 0 }, colorco[5] = { 0 }, pornco = 0, sumco = 0, onepairco, twopairpl;
 	int j;
-	card temp;
-	for (int i = 0; i < 52; i++)
+	//===========================================================================玩家
+	for (int i = 0; i < 7; i++)
 	{
+		if (*wDeck[i].face == '1')
+		{
+			numpl[1]++;
+		}
+		if (*wDeck[i].face == '2')
+		{
+			numpl[2]++;
+		}
+		if (*wDeck[i].face == '3')
+		{
+			numpl[3]++;
+		}
+		if (*wDeck[i].face == '4')
+		{
+			numpl[4]++;
+		}
+		if (*wDeck[i].face == '5')
+		{
+			numpl[5]++;
+		}
+		if (*wDeck[i].face == '6')
+		{
+			numpl[6]++;
+		}
+		if (*wDeck[i].face == '7')
+		{
+			numpl[7]++;
+		}
+		if (*wDeck[i].face == '8')
+		{
+			numpl[8]++;
+		}
+		if (*wDeck[i].face == '9')
+		{
+			numpl[9]++;
+		}
+		if (*wDeck[i].face == 'T')
+		{
+			numpl[10]++;
+		}
+		if (*wDeck[i].face == 'J')
+		{
+			numpl[11]++;
+		}
+		if (*wDeck[i].face == 'Q')
+		{
+			numpl[12]++;
+		}
+		if (*wDeck[i].face == 'K')
+		{
+			numpl[13]++;
+		}
+
+		if (!strcmp(wDeck[i].suit, "黑桃"))
+		{
+			colorpl[1] ++;
+		}
+		if (!strcmp(wDeck[i].suit, "紅心"))
+		{
+			colorpl[2]++;
+		}
+		if (!strcmp(wDeck[i].suit, "方塊"))
+		{
+			colorpl[3]++;
+		}
+		if (!strcmp(wDeck[i].suit, "梅花"))
+		{
+			colorpl[4]++;
+		}
+	}
+	for (int i = 1; i <= 13; i++)
+	{
+		if (numpl[i] == 2)
+		{
+			formpl = 1;//一對
+			pornpl++;
+		}
+		if (pornpl >= 2)
+		{
+			formpl = 2;//兩對
+		}
+		if (numpl[i] == 3)
+		{
+			formpl = 3;//三條
+			pornpl++;
+		}
+		if ((numpl[i] >= 1 && numpl[i + 1] >= 1 && numpl[i + 2] >= 1 && numpl[i + 3] >= 1 && numpl[i + 4] >= 1) || (numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1))
+		{
+			formpl = 4;//順子
+		}
+	}
+	for (j = 1; j <= 4; j++)
+	{
+		if (colorpl[j] >= 5)
+		{
+			formpl = 5;//同花
+		}
+	}
+	for (int i = 1; i <= 13; i++)
+	{
+		if (pornpl >= 2)
+		{
+			formpl = 6;//葫蘆
+		}
+		if (numpl[i] == 4)
+		{
+			formpl = 7;//鐵支
+		}
+		if ((numpl[i] >= 1 && numpl[i + 1] >= 1 && numpl[i + 2] >= 1 && numpl[i + 3] >= 1 && numpl[i + 4] >= 1) || (numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1))
+		{
+			if ((!strcmp(wDeck[i].suit, wDeck[i + 1].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 2].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 3].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 4].suit)))
+			{
+				formpl = 8; //同花順
+			}
+		}
+	}
+
+
+	//===========================================================================電腦
+	for (int i = 2; i < 9; i++)
+	{
+		if (*wDeck[i].face == '1')
+		{
+			numco[1]++;
+		}
+		if (*wDeck[i].face == '2')
+		{
+			numco[2]++;
+		}
+		if (*wDeck[i].face == '3')
+		{
+			numco[3]++;
+		}
+		if (*wDeck[i].face == '4')
+		{
+			numco[4]++;
+		}
+		if (*wDeck[i].face == '5')
+		{
+			numco[5]++;
+		}
+		if (*wDeck[i].face == '6')
+		{
+			numco[6]++;
+		}
+		if (*wDeck[i].face == '7')
+		{
+			numco[7]++;
+		}
+		if (*wDeck[i].face == '8')
+		{
+			numco[8]++;
+		}
+		if (*wDeck[i].face == '9')
+		{
+			numco[9]++;
+		}
+		if (*wDeck[i].face == 'T')
+		{
+			numco[10]++;
+		}
+		if (*wDeck[i].face == 'J')
+		{
+			numco[11]++;
+		}
+		if (*wDeck[i].face == 'Q')
+		{
+			numco[12]++;
+		}
+		if (*wDeck[i].face == 'K')
+		{
+			numco[13]++;
+		}
+
+		if (!strcmp(wDeck[i].suit, "黑桃"))
+		{
+			colorco[1] ++;
+		}
+		if (!strcmp(wDeck[i].suit, "紅心"))
+		{
+			colorco[2]++;
+		}
+		if (!strcmp(wDeck[i].suit, "方塊"))
+		{
+			colorco[3]++;
+		}
+		if (!strcmp(wDeck[i].suit, "梅花"))
+		{
+			colorco[4]++;
+		}
+	}
+	for (int i = 1; i <= 13; i++)
+	{
+		if (numco[i] == 2)
+		{
+			formco = 1;//一對
+			pornco++;
+		}
+		if (pornco >= 2)
+		{
+			formco = 2;//兩對
+		}
+		if (numco[i] == 3)
+		{
+			formco = 3;//三條
+			pornco++;
+		}
+		if (numco[i] >= 1 && numco[i + 1] >= 1 && numco[i + 2] >= 1 && numco[i + 3] >= 1 && numco[i + 4] >= 1 || numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1 && numco[1] >= 1)
+		{
+			formpl = 4;//順子
+		}
+	}
+	for (j = 1; j <= 4; j++)
+	{
+		if (colorco[j] >= 5)
+		{
+			formco = 5;//同花
+		}
+	}
+	for (int i = 1; i <= 13; i++)
+	{
+		if (pornco >= 2)
+		{
+			formco = 6;//葫蘆
+		}
+		if (numco[i] == 4)
+		{
+			formco = 7;//鐵支
+		}
+	}
+
+	//=========================================================================排型比較
+	//return 1 玩家贏  
+	//return 0 電腦贏
+	//return 2 平手
+	//=================================如果都是一對
+	if (formco == 1 && formpl == 1)
+	{
+		for (int i = 2; i <= 13; i++)
+		{
+			if (numpl[i] == 2)
+			{
+				onepairpl = i;
+				numpl[i] = 0;
+			}
+			if (numco[i] == 2)
+			{
+				onepairco = i;
+				numco[i] = 0;
+			}
+		}
+		if (numpl[1] == 2)
+		{
+			onepairpl = 14;
+		}
+		if (numco[1] == 2)
+		{
+			onepairco = 14;
+		}
+		if (onepairco > onepairpl)
+		{
+			goto cw;
+		}
+		else if (onepairco < onepairpl)
+		{
+			goto pw;
+		}
+		else if (onepairco == onepairpl)
+		{
+			if (numpl[1] > numco[1])
+			{
+				goto pw;
+			}
+			else if (numpl[1] < numco[1])
+			{
+				goto cw;
+			}
+			else
+			{
+				sumco += numco[1];
+				sumpl += numpl[1];
+			}
+			for (int i = 13; i > 1; i--)
+			{
+				if (numpl[i] > numco[i])
+				{
+					goto pw;
+				}
+				else if (numpl[i] < numco[i])
+				{
+					goto cw;
+				}
+				sumco += numco[i];
+				sumpl += numpl[i];
+				if (sumco == 3 || sumpl == 3)
+				{
+					goto sh;
+				}
+			}
+		}
+	}
+	//=================================如果都是兩對
+	if (formco == 2 && formpl == 2)
+	{
+		if (numpl[1] == 2 && numpl[1] > numco[1])
+		{
+			goto pw;
+		}
+		else if (numco[1] == 2 && numco[1] > numpl[1])
+		{
+			goto cw;
+		}
+		else
+		{
+			if (numco[1] == 2 && numpl[1] == 2)
+			{
+				for (int i = 13; i > 1; i--)
+				{
+					if (numpl[i] == 2 && numco[i] < numpl[i])
+					{
+						goto pw;
+					}
+					if (numco[i] == 2 && numco[i] > numpl[i])
+					{
+						goto cw;
+					}
+					if (numco[i] == 2 && numpl[i] == 2)
+					{
+						numco[i] -= 2;
+						numpl[i] -= 2;
+						numco[1] -= 2;
+						numpl[1] -= 2;
+						for (i = 13; i < 1; i++)
+						{
+							if (numco[i] > numpl[i])
+							{
+								goto cw;
+							}
+							else if (numco[i] < numpl[i])
+							{
+								goto pw;
+							}
+							else
+							{
+								goto sh;
+							}
+						}
+					}
+				}
+			}
+			if (numco[1] != 2 && numpl[1] != 2)
+			{
+				for (int i = 13; i > 1; i--)
+				{
+					if (numco[i] == 2 && numpl[i] < numco[i])
+					{
+						goto cw;
+					}
+					else if (numpl[i] == 2 && numpl[i] > numco[i])
+					{
+						goto pw;
+					}
+					else if (numpl[i] == 2 && numco[i] == 2)
+					{
+						numpl[i] = 0;
+						numco[i] = 0;
+						for (int i = 13; i > 1; i--)
+						{
+							if (numco[i] == 2 && numpl[i] < numco[i])
+							{
+								goto cw;
+							}
+							else if (numpl[i] == 2 && numpl[i] > numco[i])
+							{
+								goto pw;
+							}
+							else if (numpl[i] == 2 && numco[i] == 2)
+							{
+								numpl[i] = 0;
+								numco[i] = 0;
+								if (numpl[1] == 1 && numco[1] == 0)
+								{
+									goto pw;
+								}
+								else if (numco[1] == 1 && numpl[1] == 0)
+								{
+									goto cw;
+								}
+								else if (numco[1] == 1 && numpl[1] == 1)
+								{
+									goto sh;
+								}
+								else
+								{
+									for (int i = 13; i > 1; i--)
+									{
+
+										if (numpl[i] < numco[i])
+										{
+											goto cw;
+										}
+										else if (numpl[i] > numco[i])
+										{
+											goto pw;
+										}
+									}
+									goto sh;
+								}
+
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+	}
+	//=================================如果都是三條
+	if (formco == 3 && formpl == 3)
+	{
+		if (numco[1] == 3 && numpl[1] < numco[1])
+		{
+			goto cw;
+		}
+		else if (numpl[1] == 3 && numpl[1] > numco[1])
+		{
+			goto pw;
+		}
+		else if (numpl[1] == 3 && numco[1] == 3)
+		{
+			for (int i = 13; i > 1; i--)
+			{
+				if (numco[i] > numpl[i])
+				{
+					goto cw;
+				}
+				else if (numco[i] < numpl[i])
+				{
+					goto pw;
+				}
+				else if (numco[i] == numpl[i])
+				{
+					numco[i] = 0;
+					numpl[i] = 0;
+					for (int i = 13; i > 1; i--)
+					{
+						if (numco[i] > numpl[i])
+						{
+							goto cw;
+						}
+						else if (numco[i] < numpl[i])
+						{
+							goto pw;
+						}
+						else if (numco[i] == numpl[i])
+						{
+							goto sh;
+						}
+					}
+				}
+
+			}
+
+		}
+
+		else
+		{
+
+			for (int i = 13; i > 1; i--)
+			{
+				if (numpl[i] == 3 && numpl[i] > numco[i])
+				{
+					goto pw;
+				}
+				else if (numco[i] == 3 && numpl[i] < numco[i])
+				{
+					goto cw;
+				}
+				else if (numco[i] == 3 && numpl[i] == 3)
+				{
+					numco[i] == 0;
+					numpl[i] == 0;
+					for (int i = 13; i > 1; i--)
+					{
+						if (numco[i] > numpl[i])
+						{
+							goto cw;
+						}
+						else if (numco[i] < numpl[i])
+						{
+							goto pw;
+						}
+						else if (numco[i] == numpl[i])
+						{
+							numco[i] = 0;
+
+							numpl[i] = 0;
+							for (int i = 13; i > 1; i--)
+							{
+								if (numco[i] > numpl[i])
+								{
+									goto cw;
+								}
+								else if (numco[i] < numpl[i])
+								{
+									goto pw;
+								}
+								else if (numco[i] == numpl[i])
+								{
+									goto sh;
+								}
+							}
+						}
+
+					}
+				}
+
+			}
+		}
+
+	}
+	//=================================如果都是順子
+	if (formco == 4 && formpl == 4)
+	{
+		if ((numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1 && numco[1] >= 1) && (numpl[1] == 0 || numpl[10] == 0 || numpl[11] == 0 || numpl[12] == 0 || numpl[13] == 0))
+		{
+			goto cw;
+		}
+		else if ((numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1) && (numco[1] == 0 || numco[10] == 0 || numco[11] == 0 || numco[12] == 0 || numco[13] == 0))
+		{
+			goto pw;
+		}
+		else if ((numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1) && (numco[1] >= 1 && numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1))
+		{
+			goto sh;
+		}
+		else
+		{
+			for (int i = 13; i >= 5; i--)
+			{
+				if ((numco[i] >= 1 && numco[i - 1] >= 1 && numco[i - 2] >= 1 && numco[i - 3] >= 1 && numco[i - 4] >= 1) && (numpl[i] == 0 || numpl[i - 1] == 0 || numpl[i - 2] == 0 || numpl[i - 3] == 0 || numpl[i - 4] == 0))
+				{
+					goto cw;
+				}
+				else if ((numpl[i] >= 1 && numpl[i - 1] >= 1 && numpl[i - 2] >= 1 && numpl[i - 3] >= 1 && numpl[i - 4] >= 1) && (numco[i] == 0 || numco[i - 1] == 0 || numco[i - 2] == 0 || numco[i - 3] == 0 || numco[i - 4] == 0))
+				{
+					goto pw;
+				}
+				else if ((numpl[i] >= 1 && numpl[i - 1] >= 1 && numpl[i - 2] >= 1 && numpl[i - 3] >= 1 && numpl[i - 4] >= 1) && (numco[i] >= 1 && numco[i - 1] >= 1 && numco[i - 2] >= 1 && numco[i - 3] >= 1 && numco[i - 4] >= 1))
+				{
+					goto sh;
+				}
+			}
+		}
+	}
+cw:
+	return 0;
+pw:
+	return 1;
+sh:
+	return 2;
+}
+
+
+/* place strings into Card structures */
+void fillDeck(Card * const wDeck, const char * wFace[],
+	const char * wSuit[])
+{
+	int i;/* counter */
+
+	/* loop through wDeck */
+	for (i = 0; i <= 51; i++) {
+		wDeck[i].face = wFace[i % 13];
+		wDeck[i].suit = wSuit[i / 13];
+	}/* end for */
+}/* end function fillDeck */
+
+/* shuffle cards */
+void shuffle(Card * const wDeck)
+{
+	int i;/* counter */
+	int j;/* variable to hold random value between 0 - 51 */
+	Card temp; /* define temporary structure for swapping Cards */
+
+	/* loop through wDeck randomly swapping Cards */
+	for (i = 0; i <= 51; i++) {
 		j = rand() % 52;
 		temp = wDeck[i];
 		wDeck[i] = wDeck[j];
 		wDeck[j] = temp;
-	}
-}
+	}/* end for */
+}/* end function shuffle */
 
-void fillDeck(card  *wDeck, const char* wFace[], const char* wSuit[])
+/* deal cards */
+void deal(const Card * const wDeck)
 {
-	int i;
-	for (i = 0; i < 52; i++)
-	{
-		wDeck[i].face = wFace[i % 13];
-		wDeck[i].suit = wSuit[i / 13];
-	}
-}
+	int i;/* counter */
+	/* loop through wDeck */
+	for (i = 0; i <= 51; i++) {
+		printf("%s%-5s%s", wDeck[i].suit, wDeck[i].face,
+			(i + 1) % 4 ? " " : "\n");
+	}/* end for */
+}/* end function deal */
