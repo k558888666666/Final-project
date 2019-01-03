@@ -12,44 +12,44 @@ c:\users\fte\desktop\main final project\source\main.c(90): warning C4090: '函�
 c:\users\fte\desktop\main final project\source\main.c(92): warning C4090: '函式': 不同的 'const' 限定詞
 c:\users\fte\desktop\main final project\source\main.c(94): warning C4090: '函式': 不同的 'const' 限定詞
 c:\users\fte\desktop\main final project\source\main.c(45): warning C4101: 'i': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(117): warning C4477: 'printf' : 格式字串 '%-5d' 需要 'int' 類型的引數，但 variadic 引數 2 的類型為 'char *'
-c:\users\fte\desktop\main final project\source\main.c(126): warning C4244: '函式': 將 'time_t' 轉換為 'unsigned int'，由於類型不同，可能導致資料遺失
-c:\users\fte\desktop\main final project\source\main.c(234): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(238): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(242): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(246): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(250): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(254): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(258): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(262): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(266): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(270): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(274): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(278): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(282): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(425): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(429): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(433): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(437): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(441): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(445): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(449): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(453): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(457): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(461): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(465): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(469): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(473): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
-c:\users\fte\desktop\main final project\source\main.c(861): warning C4553: '==': 未使用運算式結果; 您是否想要 '='?
-c:\users\fte\desktop\main final project\source\main.c(862): warning C4553: '==': 未使用運算式結果; 您是否想要 '='?
-c:\users\fte\desktop\main final project\source\main.c(230): warning C4101: 'juice': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(228): warning C4101: 'twopairpl': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(230): warning C4101: 'huge': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(230): warning C4101: 'hole': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(229): warning C4101: 'twopairco': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(230): warning C4101: 'dick': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(230): warning C4101: 'ass': 未參考的區域變數
-c:\users\fte\desktop\main final project\source\main.c(1244): warning C4090: '=': 不同的 'const' 限定詞
-c:\users\fte\desktop\main final project\source\main.c(1245): warning C4090: '=': 不同的 'const' 限定詞
-c:\users\fte\desktop\main final project\source\main.c(225): warning C4715: 'init_Bet': 不是所有控制路徑都傳回值
+c:\users\fte\desktop\main final project\source\main.c(138): warning C4477: 'printf' : 格式字串 '%-5d' 需要 'int' 類型的引數，但 variadic 引數 2 的類型為 'char *'
+c:\users\fte\desktop\main final project\source\main.c(147): warning C4244: '函式': 將 'time_t' 轉換為 'unsigned int'，由於類型不同，可能導致資料遺失
+c:\users\fte\desktop\main final project\source\main.c(257): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(261): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(265): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(269): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(273): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(277): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(281): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(285): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(289): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(293): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(297): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(301): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(305): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(452): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(456): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(460): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(464): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(468): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(472): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(476): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(480): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(484): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(488): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(492): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(496): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(500): warning C4047: '==': 'char *' 與 'int' 間接取值的層級不同
+c:\users\fte\desktop\main final project\source\main.c(900): warning C4553: '==': 未使用運算式結果; 您是否想要 '='?
+c:\users\fte\desktop\main final project\source\main.c(901): warning C4553: '==': 未使用運算式結果; 您是否想要 '='?
+c:\users\fte\desktop\main final project\source\main.c(253): warning C4101: 'juice': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(251): warning C4101: 'twopairpl': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(253): warning C4101: 'huge': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(253): warning C4101: 'hole': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(252): warning C4101: 'twopairco': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(253): warning C4101: 'dick': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(253): warning C4101: 'ass': 未參考的區域變數
+c:\users\fte\desktop\main final project\source\main.c(1283): warning C4090: '=': 不同的 'const' 限定詞
+c:\users\fte\desktop\main final project\source\main.c(1284): warning C4090: '=': 不同的 'const' 限定詞
+c:\users\fte\desktop\main final project\source\main.c(248): warning C4715: 'init_Bet': 不是所有控制路徑都傳回值
   HW.vcxproj -> C:\Users\FTE\Desktop\main final project\HW\HW\..\..\temp\debug\HW.exe

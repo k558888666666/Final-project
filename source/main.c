@@ -94,20 +94,41 @@ void start(const card* const wDeck, int *z)
 	show(7, 8, wDeck);
 	if (con == 1)
 	{
-		printf("玩家獲勝/n");
+		printf("玩家獲勝\n");
+		gold = gold + tablemoney;
+		if (opmoney <= 0)
+		{
+			printf("電腦破產\n");
+			system("pause");
+			exit(0);
+		}
+		tablemoney = 0;
 		return;
 	}
 	if (con == 0)
 	{
-		printf("電腦獲勝/n");
+		printf("電腦獲勝\n");
+		opmoney = opmoney + tablemoney;
+		if (gold <= 0)
+		{
+			printf("您輸到脫褲了\n");
+			system("pause");
+			exit(0);
+		}
+		tablemoney = 0;
 		return;
 	}
 	if (con == 2)
 	{
-		printf("平手/n");
+		gold = gold + (tablemoney / 2);
+		opmoney = opmoney + (tablemoney / 2);
+		tablemoney = 0;
+		printf("平手\n");
 		return;
 	}
 	printf("\n\n\n\n");
+
+
 	//==================================================================第四回合結束
 }
 void show(int i, int f, card* const wDeck)
@@ -125,7 +146,7 @@ int init_Bet()
 	int amount = 0, Basic, react;
 	srand(time(NULL));
 	Basic = 1 + rand() % 50;
-	react = rand() % 10;
+	react = rand() % 10000;
 	//printf("對面玩家下賭注%d", Basic);
 	printf("\n是否棄牌?(y/n)\n");
 	scanf_s("%s", select, sizeof(char) * 4);
@@ -135,9 +156,9 @@ int init_Bet()
 		printf("現在我有:%d元\n", gold);
 		printf("請下賭注\n");
 		scanf_s("%d", &Basic);
-		while (Basic > gold)
+		while (Basic > gold || Basic > opmoney)
 		{
-			printf("你沒有錢窮鬼\n請重新下注:");
+			printf("下注金額不合法\n請重新下注:");
 			scanf_s("%d", &Basic);
 		}
 		if (react == 0)
@@ -172,9 +193,9 @@ int init_Bet()
 			{
 				printf("加注多少\n?");
 				scanf_s("%d", &amount);
-				while (amount > gold)
+				while (amount > gold || amount > opmoney)
 				{
-					printf("你沒有錢窮鬼\n請重新下注:");
+					printf("下注金額不合法\n請重新下注:");
 					scanf_s("%d", &amount);
 				}
 				{
@@ -220,6 +241,8 @@ int init_Bet()
 	}
 	else
 	{
+		opmoney = opmoney + tablemoney;
+		tablemoney = 0;
 		return -1;
 	}
 }
@@ -341,6 +364,10 @@ int compare(card  *wDeck)
 		}
 	}
 	printf("玩家 ");
+	if (formpl == 0)
+	{
+		printf("高牌\n");
+	}
 	if (formpl == 1)
 	{
 		printf("一對\n");
@@ -508,7 +535,7 @@ int compare(card  *wDeck)
 			formco = 3;//三條
 			porncoFH++;
 		}
-		if (numco[i] >= 1 && numco[i + 1] >= 1 && numco[i + 2] >= 1 && numco[i + 3] >= 1 && numco[i + 4] >= 1 || numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1 && numco[1] >= 1)
+		if ((numco[i] >= 1 && numco[i + 1] >= 1 && numco[i + 2] >= 1 && numco[i + 3] >= 1 && numco[i + 4] >= 1) || (numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1 && numco[1] >= 1))
 		{
 			formpl = 4;//順子
 		}
@@ -532,6 +559,10 @@ int compare(card  *wDeck)
 		}
 	}
 	printf("電腦 ");
+	if (formco == 0)
+	{
+		printf("高牌\n");
+	}
 	if (formco == 1)
 	{
 		printf("一對\n");
@@ -612,6 +643,14 @@ int compare(card  *wDeck)
 	}
 
 	//=========================================================================排型比較
+	if (formpl > formco)
+	{
+		goto pw;
+	}
+	else if (formco < formco)
+	{
+		goto cw;
+	}
 	//return 1 玩家贏  
 	//return 0 電腦贏
 	//return 2 平手
