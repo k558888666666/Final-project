@@ -35,7 +35,6 @@ int main()
 		printf("是否要開始新賽局(y/n)\n");
 		scanf_s("%s", choose, sizeof(choose));
 	}
-
 	system("pause");
 	return 0;
 }
@@ -111,11 +110,6 @@ void start(const card* const wDeck, int *z)
 	printf("\n\n\n\n");
 	//==================================================================第四回合結束
 }
-
-
-
-
-
 void show(int i, int f, card* const wDeck)
 {
 	for (int j = i; j <= f; j++)
@@ -124,12 +118,6 @@ void show(int i, int f, card* const wDeck)
 	}
 	printf("\n");
 }
-
-
-
-
-
-
 int init_Bet()
 {
 	int i = 0;
@@ -235,16 +223,11 @@ int init_Bet()
 		return -1;
 	}
 }
-
-
-
-
-
 int compare(card  *wDeck)
 {
-	int formpl = 0, numpl[20] = { 0 }, colorpl[5] = { 0 }, pornpl = 0, sumpl = 0, onepairpl, twopairpl;
-	int formco = 0, numco[20] = { 0 }, colorco[5] = { 0 }, pornco = 0, sumco = 0, onepairco, twopairco;
-	int j;
+	int formpl = 0, numpl[20] = { 0 }, colorpl[5] = { 0 }, pornplFH = 0, pornplOP = 0, sumpl = 0, onepairpl, twopairpl, SFnumpl[20] = { 0 };
+	int formco = 0, numco[20] = { 0 }, colorco[5] = { 0 }, porncoFH = 0, porncoOP = 0, sumco = 0, onepairco, twopairco, SFnumco[20] = { 0 };
+	int j, hole, juice, huge, dick, ass;
 	//===========================================================================玩家
 	for (int i = 0; i < 7; i++)
 	{
@@ -323,16 +306,16 @@ int compare(card  *wDeck)
 		if (numpl[i] == 2)
 		{
 			formpl = 1;//一對
-			pornpl++;
+			pornplOP++;
 		}
-		if (pornpl >= 2)
+		if (pornplOP >= 2)
 		{
 			formpl = 2;//兩對
 		}
 		if (numpl[i] == 3)
 		{
 			formpl = 3;//三條
-			pornpl++;
+			pornplFH++;
 		}
 		if ((numpl[i] >= 1 && numpl[i + 1] >= 1 && numpl[i + 2] >= 1 && numpl[i + 3] >= 1 && numpl[i + 4] >= 1) || (numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1))
 		{
@@ -348,20 +331,13 @@ int compare(card  *wDeck)
 	}
 	for (int i = 1; i <= 13; i++)
 	{
-		if (pornpl >= 2)
+		if (pornplOP >= 1 && pornplFH >= 1)
 		{
 			formpl = 6;//葫蘆
 		}
 		if (numpl[i] == 4)
 		{
 			formpl = 7;//鐵支
-		}
-		if ((numpl[i] >= 1 && numpl[i + 1] >= 1 && numpl[i + 2] >= 1 && numpl[i + 3] >= 1 && numpl[i + 4] >= 1) || (numpl[10] >= 1 && numpl[11] >= 1 && numpl[12] >= 1 && numpl[13] >= 1 && numpl[1] >= 1))
-		{
-			if ((!strcmp(wDeck[i].suit, wDeck[i + 1].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 2].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 3].suit)) && (!strcmp(wDeck[i].suit, wDeck[i + 4].suit)))
-			{
-				formpl = 8; //同花順
-			}
 		}
 	}
 	printf("玩家 ");
@@ -396,6 +372,52 @@ int compare(card  *wDeck)
 	if (formpl == 8)
 	{
 		printf("同花順\n");
+	}
+	for (int i = 1; i < 20; i++)
+	{
+		SFnumpl[i] = numpl[i];
+	}
+	for (int i = 0; i <= 6; i++)
+	{
+		if (colorpl[1] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "黑桃"))
+			{
+				SFnumpl[*wDeck[i].face] --;
+			}
+		}
+		if (colorpl[2] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "紅心"))
+			{
+				SFnumpl[*wDeck[i].face] --;
+			}
+		}
+		if (colorpl[3] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "方塊"))
+			{
+				SFnumpl[*wDeck[i].face] --;
+			}
+		}
+		if (colorpl[4] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "梅花"))
+			{
+				SFnumpl[*wDeck[i].face] --;
+			}
+		}
+	}
+	for (int i = 1; i <= 9; i++)
+	{
+		if (SFnumpl[i] >= 1 && SFnumpl[i + 1] >= 1 && SFnumpl[i + 2] >= 1 && SFnumpl[i + 3] >= 1 && SFnumpl[i + 4] >= 1)
+		{
+			formpl = 8;//同花順
+		}
+	}
+	if (SFnumpl[1] >= 1 && SFnumpl[10] >= 1 && SFnumpl[11] >= 1 && SFnumpl[12] >= 1 && SFnumpl[13] >= 1)
+	{
+		formpl = 9;//同花大順
 	}
 	//===========================================================================電腦
 	for (int i = 2; i < 9; i++)
@@ -475,16 +497,16 @@ int compare(card  *wDeck)
 		if (numco[i] == 2)
 		{
 			formco = 1;//一對
-			pornco++;
+			porncoOP++;
 		}
-		if (pornco >= 2)
+		if (porncoOP >= 2)
 		{
 			formco = 2;//兩對
 		}
 		if (numco[i] == 3)
 		{
 			formco = 3;//三條
-			pornco++;
+			porncoFH++;
 		}
 		if (numco[i] >= 1 && numco[i + 1] >= 1 && numco[i + 2] >= 1 && numco[i + 3] >= 1 && numco[i + 4] >= 1 || numco[10] >= 1 && numco[11] >= 1 && numco[12] >= 1 && numco[13] >= 1 && numco[1] >= 1)
 		{
@@ -500,7 +522,7 @@ int compare(card  *wDeck)
 	}
 	for (int i = 1; i <= 13; i++)
 	{
-		if (pornco >= 2)
+		if (porncoOP >= 1 && porncoFH >= 1)
 		{
 			formco = 6;//葫蘆
 		}
@@ -541,6 +563,52 @@ int compare(card  *wDeck)
 	if (formco == 8)
 	{
 		printf("同花順\n");
+	}
+	for (int i = 1; i < 20; i++)
+	{
+		SFnumco[i] = numco[i];
+	}
+	for (int i = 2; i <= 8; i++)
+	{
+		if (colorco[1] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "黑桃"))
+			{
+				SFnumco[*wDeck[i].face] --;
+			}
+		}
+		if (colorco[2] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "紅心"))
+			{
+				SFnumco[*wDeck[i].face] --;
+			}
+		}
+		if (colorco[3] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "方塊"))
+			{
+				SFnumco[*wDeck[i].face] --;
+			}
+		}
+		if (colorco[4] >= 5)
+		{
+			if (strcmp(wDeck[i].suit, "梅花"))
+			{
+				SFnumco[*wDeck[i].face] --;
+			}
+		}
+	}
+	for (int i = 1; i <= 9; i++)
+	{
+		if (SFnumco[i] >= 1 && SFnumco[i + 1] >= 1 && SFnumco[i + 2] >= 1 && SFnumco[i + 3] >= 1 && SFnumco[i + 4] >= 1)
+		{
+			formco = 8;//同花順
+		}
+	}
+	if (SFnumco[1] >= 1 && SFnumco[10] >= 1 && SFnumco[11] >= 1 && SFnumco[12] >= 1 && SFnumco[13] >= 1)
+	{
+		formpl = 9;//同花大順
 	}
 
 	//=========================================================================排型比較
@@ -726,9 +794,7 @@ int compare(card  *wDeck)
 					}
 				}
 			}
-
 		}
-
 	}
 	//=================================如果都是三條
 	if (formco == 3 && formpl == 3)
@@ -777,7 +843,6 @@ int compare(card  *wDeck)
 			}
 
 		}
-
 		else
 		{
 
@@ -1054,7 +1119,7 @@ int compare(card  *wDeck)
 		}
 	}
 	//=================================如果都是鐵支
-	if ((formco == 7) && (formpl == 7))
+	if (formco == 7 && formpl == 7)
 	{
 		if (numco[1] == 4 && numpl[1] < numco[1])
 		{
@@ -1127,7 +1192,30 @@ int compare(card  *wDeck)
 		}
 
 	}
-
+	//=================================如果都是同花順
+	if (formco == 8 && formpl == 8)
+	{
+		for (int i = 13; i >= 5; i++)
+		{
+			if (SFnumco[i] > SFnumpl[i] && SFnumco[i] >= 1 && SFnumco[i - 1] >= 1 && SFnumco[i - 2] >= 1 && SFnumco[i - 3] >= 1 && SFnumco[i - 4] >= 1)
+			{
+				goto cw;
+			}
+			else if (SFnumco[i] < SFnumpl[i] && SFnumpl[i] >= 1 && SFnumpl[i - 1] >= 1 && SFnumpl[i - 2] >= 1 && SFnumpl[i - 3] >= 1 && SFnumpl[i - 4] >= 1)
+			{
+				goto pw;
+			}
+			else if (SFnumco[i] >= 1 && SFnumco[i - 1] >= 1 && SFnumco[i - 2] >= 1 && SFnumco[i - 3] >= 1 && SFnumco[i - 4] >= 1 && SFnumpl[i] >= 1 && SFnumpl[i - 1] >= 1 && SFnumpl[i - 2] >= 1 && SFnumpl[i - 3] >= 1 && SFnumpl[i - 4] >= 1)
+			{
+				goto sh;
+			}
+		}
+	}
+	//=================================如果都是同花大順
+	if (formco == 9 && formpl == 9)
+	{
+		goto sh;
+	}
 cw:
 	return 0;
 pw:
@@ -1135,10 +1223,7 @@ pw:
 sh:
 	return 2;
 }
-
-
-
-
+/* place strings into Card structures */
 void shuffle(card* const wDeck)
 {
 	int j;
@@ -1151,9 +1236,6 @@ void shuffle(card* const wDeck)
 		wDeck[j] = temp;
 	}
 }
-
-
-
 void fillDeck(card  *wDeck, const char* wFace[], const char* wSuit[])
 {
 	int i;
